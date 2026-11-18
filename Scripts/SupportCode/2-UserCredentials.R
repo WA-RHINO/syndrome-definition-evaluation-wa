@@ -1,8 +1,8 @@
 ## Load ESSENCE Credentials
-tryCatch({load("~/myProfile.rda")}, # Load myProfile credentials
+tryCatch({load("~/myProfileWA.rda");myProfile<-myProfileWA}, # Load myProfile credentials
          
          # If myProfile credentials are not available at the home directory, regenerate them! 
-         error = function(e) {Rnssp::create_user_profile_gui()}) # Note: Select .rda option! 
+         error = function(e) {source("https://raw.githubusercontent.com/WA-RHINO/rhino-essence-api-resources/refs/heads/main/Credentials/save_wa_essence_credentials.R")}) # Note: Select .rda option! 
 
 
 ## Manual instructions below if needed
