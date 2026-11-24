@@ -33,10 +33,18 @@ params$jurisdiction <- DefinitionInformation[["Setup"]]$Jurisdiction
 
 ### ESSENCE Fields to Pull & Analyze
 
+#### Check Instance in APIs
+
+instance <- stringr::str_extract(DefinitionInformation$DefinitionInformation$API[1],"((?<=.com/)|(?<=.org/)).+(?=/api/)")
+
 #### All Fields to Pull in API
-params$fields <-  DefinitionInformation[["SelectFields"]] %>%
+params$fields <- DefinitionInformation[["SelectFields"]] %>%
+  mutate(instance_match = case_when(
+    instance=="ih_essence" & Instance=="NSSP" ~ "Drop",
+    instance=="nssp_essence" & Instance=="WA" ~ "Drop",
+    TRUE ~ "Keep")) %>%
   mutate(includeAPI = ifelse(IncludeForValidationReview =="Yes"| IncludeForTextAnalysis =="Yes", "Yes", "No")) %>%
-  filter(includeAPI == "Yes") # All Fields allowed in Data Pulls
+  filter(includeAPI == "Yes" & instance_match=="Keep") # All Fields allowed in Data Pulls
 
 #### All Fields (as API URL)
 params$fields_api_url <- params$fields %>%
