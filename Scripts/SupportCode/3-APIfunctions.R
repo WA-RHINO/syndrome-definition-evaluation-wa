@@ -1,43 +1,6 @@
 #### Quick API pull functions ------------
 
-get_essence_data <- function(url, start_date = NULL, end_date = NULL) {
-  
-  api_type <- str_extract(url,"(?<=api/).+(?=\\?)")
-  
-  url_new <- change_dates(url, start_date, end_date)
-  
-  if (api_type == "timeSeries") {
-    api_response <- myProfile$get_api_response(url_new)
-    api_response_json <- content(api_response, as = "text")
-    api_data <- fromJSON(api_response_json) %>%
-      extract2("timeSeriesData")
-  } else if (api_type == "timeSeries/graph") {
-    api_png <- myProfile$get_api_tsgraph(url_new)
-    knitr::include_graphics(api_png$tsgraph)
-  } else if (api_type == "tableBuilder") {
-    api_data <- myProfile$get_api_data(url_new)
-  } else if (api_type == "tableBuilder/csv") {
-    api_data <- myProfile$get_api_data(url_new, fromCSV = TRUE)
-  } else if (api_type == "dataDetails") {
-    api_data <- myProfile$get_api_data(url_new) %>%
-      extract2("dataDetails")
-  } else if (api_type == "dataDetails/csv") {
-    api_data <- myProfile$get_api_data(url_new, fromCSV = TRUE) 
-  } else if (api_type == "summaryData") {
-    api_data <- myProfile$get_api_data(url_new) %>%
-      extract2("summaryData")
-  } else if (api_type == "alerts/regionSyndromeAlerts") {
-    api_data <- myProfile$get_api_data(url_new) %>%
-      extract2("regionSyndromeAlerts")
-  } else if (api_type == "alerts/hospitalSyndromeAlerts") {
-    api_data <- myProfile$get_api_data(url_new) %>%
-      extract2("hospitalSyndromeAlerts")
-  } else {
-    writeLines("Error: API did not work as expected. Please check your URL, dates, and password before trying again.")
-  }
-  
-}
-
+source("https://raw.githubusercontent.com/WA-RHINO/rhino-essence-api-resources/refs/heads/main/Helper_Functions/set_myProfile.R")
 
 
 #### data details (line level long term) ####
